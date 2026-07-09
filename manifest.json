@@ -1,0 +1,23 @@
+{
+  "name": "艾宾浩斯听书计划",
+  "short_name": "听书计划",
+  "description": "基于艾宾浩斯遗忘曲线 + 交错学习的听书复习计划",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#4F46E5",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

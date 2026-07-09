@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#4F46E5">
+  <title>艾宾浩斯听书计划</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <h1>📚 艾宾浩斯听书</h1>
+      <p class="subtitle">交错学习 · 科学内化 · 最大化记忆</p>
+    </header>
+
+    <main class="main-content" id="main-content">
+      <!-- 今日任务 -->
+      <section id="page-today" class="page active">
+        <div class="date-bar">
+          <span id="today-date">--</span>
+          <span class="review-count" id="review-count">今日 0 本 · 0 分钟</span>
+        </div>
+        <div class="hero-card">
+          <div class="hero-icon">🎧</div>
+          <div class="hero-text">
+            <p>今日交错学习计划</p>
+            <h2 id="hero-number">0 <small>本</small></h2>
+            <p class="hero-sub" id="hero-time">0 分钟</p>
+          </div>
+        </div>
+        <div class="time-bar" id="time-bar">
+          <div class="time-fill" id="time-fill"></div>
+          <span class="time-label" id="time-label">0 / 90 分钟</span>
+        </div>
+        <div class="task-list" id="today-list">
+          <div class="empty-state" id="today-empty">
+            <div class="empty-icon">☕</div>
+            <p>今天没有学习安排</p>
+            <p class="empty-hint">去书单添加书籍开始吧</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 书单 -->
+      <section id="page-books" class="page">
+        <div class="section-header">
+          <h2>我的书单</h2>
+          <div class="header-actions">
+            <button class="btn-text" id="btn-batch">智能排满</button>
+            <button class="btn-icon" id="btn-add-book">+</button>
+          </div>
+        </div>
+        <div class="book-list" id="book-list">
+          <div class="empty-state" id="books-empty">
+            <div class="empty-icon">📖</div>
+            <p>书单还是空的</p>
+            <p class="empty-hint">点击右上角 + 添加第一本书</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 日历 -->
+      <section id="page-calendar" class="page">
+        <div class="section-header">
+          <h2>复习日历</h2>
+        </div>
+        <div class="calendar-nav">
+          <button class="btn-nav" id="cal-prev">‹</button>
+          <span id="cal-month">--</span>
+          <button class="btn-nav" id="cal-next">›</button>
+        </div>
+        <div class="calendar-grid">
+          <div class="cal-weekdays">
+            <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+          </div>
+          <div class="cal-days" id="cal-days"></div>
+        </div>
+        <div class="day-detail" id="day-detail">
+          <p class="detail-date" id="detail-date">--</p>
+          <div class="detail-list" id="detail-list"></div>
+        </div>
+      </section>
+
+      <!-- 设置 -->
+      <section id="page-settings" class="page">
+        <div class="section-header">
+          <h2>设置</h2>
+        </div>
+        <div class="settings-list">
+          <div class="setting-item">
+            <label>每日学习配置</label>
+            <div class="config-row">
+              <div class="config-cell">
+                <span class="config-label">目标本数</span>
+                <input type="number" id="setting-books-per-day" min="1" max="5" value="3">
+              </div>
+              <div class="config-cell">
+                <span class="config-label">每本时长(分)</span>
+                <input type="number" id="setting-minutes-per-book" min="10" max="60" value="30">
+              </div>
+            </div>
+            <p class="setting-hint">建议：3本 × 30分钟 = 90分钟（认知科学最优交错）</p>
+          </div>
+          <div class="setting-item">
+            <label>艾宾浩斯复习间隔</label>
+            <div class="intervals-tags" id="intervals-tags">
+              <span class="tag">首次</span><span class="tag">第1天</span><span class="tag">第2天</span>
+              <span class="tag">第4天</span><span class="tag">第7天</span><span class="tag">第15天</span>
+              <span class="tag">第30天</span><span class="tag">第60天</span><span class="tag">第90天</span>
+              <span class="tag">第180天</span><span class="tag">第365天</span>
+            </div>
+            <p class="setting-hint">共11次学习，覆盖一年以上</p>
+          </div>
+          <div class="setting-item">
+            <label>数据管理</label>
+            <div class="setting-buttons">
+              <button class="btn-secondary" id="btn-export">📤 导出备份</button>
+              <button class="btn-secondary" id="btn-import">📥 导入备份</button>
+              <button class="btn-danger" id="btn-clear">🗑️ 清空全部</button>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label>关于</label>
+            <p class="about-text">艾宾浩斯听书计划 v2.0<br>基于艾宾浩斯遗忘曲线 + 交错学习<br>每天3本 × 30分钟 = 90分钟最优内化<br>所有数据保存在本地，完全离线可用</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 添加书籍弹窗 -->
+    <div class="modal" id="modal-add">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <h3>添加书籍</h3>
+        <div class="form-group">
+          <label>书名</label>
+          <input type="text" id="input-title" placeholder="例如：认知觉醒" required>
+        </div>
+        <div class="form-group">
+          <label>首次听书日期</label>
+          <input type="date" id="input-date" required>
+        </div>
+        <div class="form-group">
+          <label>备注（可选）</label>
+          <input type="text" id="input-note" placeholder="作者、平台、感想等">
+        </div>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="btn-cancel">取消</button>
+          <button class="btn-primary" id="btn-save">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 批量排满弹窗 -->
+    <div class="modal" id="modal-batch">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <h3>智能排满书单</h3>
+        <div class="form-group">
+          <label>起始日期</label>
+          <input type="date" id="batch-start-date" required>
+        </div>
+        <div class="form-group">
+          <label>书籍列表（每行一本）</label>
+          <textarea id="batch-titles" placeholder="例如：
+认知觉醒
+被讨厌的勇气
+高效能人士的七个习惯
+..." rows="8" required></textarea>
+        </div>
+        <div class="batch-preview" id="batch-preview"></div>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="btn-cancel-batch">取消</button>
+          <button class="btn-primary" id="btn-save-batch">一键排满</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 导入弹窗 -->
+    <div class="modal" id="modal-import">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <h3>导入备份</h3>
+        <textarea id="import-area" placeholder="粘贴之前导出的JSON数据..."></textarea>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="btn-cancel-import">取消</button>
+          <button class="btn-primary" id="btn-confirm-import">导入</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-page="today">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">今日</span>
+      </button>
+      <button class="nav-item" data-page="books">
+        <span class="nav-icon">📚</span>
+        <span class="nav-label">书单</span>
+      </button>
+      <button class="nav-item" data-page="calendar">
+        <span class="nav-icon">🗓️</span>
+        <span class="nav-label">日历</span>
+      </button>
+      <button class="nav-item" data-page="settings">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">设置</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
